@@ -3,7 +3,9 @@ using namespace System.Net
 Function Invoke-ExecGraphExplorerPreset {
     <#
     .FUNCTIONALITY
-    Entrypoint
+        Entrypoint
+    .ROLE
+        CIPP.Core.Read
     #>
     [CmdletBinding()]
     param($Request, $TriggerMetadata)
@@ -33,7 +35,10 @@ Function Invoke-ExecGraphExplorerPreset {
     }
 
     $params = $Request.Body.preset | Select-Object endpoint, '$filter', '$select', '$count', '$expand', '$search', NoPagination, '$top', IsShared
-    if ($params.'$select') { $params.'$select' = ($params.'$select').value -join ',' }
+
+    if ($params.'$select'.value) {
+        $params.'$select' = ($params.'$select').value -join ','
+    }
 
     $Preset = [PSCustomObject]@{
         PartitionKey = 'Preset'

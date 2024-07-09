@@ -3,7 +3,9 @@ using namespace System.Net
 Function Invoke-ExecDnsConfig {
     <#
     .FUNCTIONALITY
-    Entrypoint
+        Entrypoint
+    .ROLE
+        CIPP.AppSettings.ReadWrite
     #>
     [CmdletBinding()]
     param($Request, $TriggerMetadata)
@@ -88,7 +90,7 @@ Function Invoke-ExecDnsConfig {
             }
             'GetConfig' {
                 $body = [pscustomobject]$Config
-                Write-LogMessage -API $APINAME -tenant 'Global' -user $request.headers.'x-ms-client-principal' -message 'Retrieved DNS configuration' -Sev 'Info'
+                Write-LogMessage -API $APINAME -tenant 'Global' -user $request.headers.'x-ms-client-principal' -message 'Retrieved DNS configuration' -Sev 'Debug'
             }
             'RemoveDomain' {
                 $Filter = "RowKey eq '{0}'" -f $Request.Query.Domain

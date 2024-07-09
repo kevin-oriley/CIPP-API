@@ -3,7 +3,9 @@ using namespace System.Net
 Function Invoke-ListTeams {
     <#
     .FUNCTIONALITY
-    Entrypoint
+        Entrypoint
+    .ROLE
+        Teams.Group.Read
     #>
     [CmdletBinding()]
     param($Request, $TriggerMetadata)
@@ -18,7 +20,7 @@ Function Invoke-ListTeams {
     # Interact with query parameters or the body of the request.
     $TenantFilter = $Request.Query.TenantFilter
     if ($request.query.type -eq 'List') {
-        $GraphRequest = New-GraphGetRequest -uri "https://graph.microsoft.com/beta/groups?`$filter=resourceProvisioningOptions/Any(x:x eq 'Team')&`$select=id,displayname,description,visibility,mailNickname" -tenantid $TenantFilter
+        $GraphRequest = New-GraphGetRequest -uri "https://graph.microsoft.com/beta/groups?`$filter=resourceProvisioningOptions/Any(x:x eq 'Team')&`$select=id,displayname,description,visibility,mailNickname" -tenantid $TenantFilter | Sort-Object -Property displayName
     }
     $TeamID = $request.query.ID
     Write-Host $TeamID
